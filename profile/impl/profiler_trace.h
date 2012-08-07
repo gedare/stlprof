@@ -100,12 +100,14 @@ namespace __gnu_profile
   class __trace_vector_to_list;
   class __trace_list_to_slist; 
   class __trace_list_to_vector; 
+  class __trace_vector_statistics;
   void __trace_vector_size_init();
   void __trace_hashtable_size_init();
   void __trace_hash_func_init();
   void __trace_vector_to_list_init();
   void __trace_list_to_slist_init();  
   void __trace_list_to_vector_init();  
+  void __trace_vector_statistics_init();
   void __trace_map_to_unordered_map_init();
   void __trace_vector_size_report(FILE*, __warning_vector_t&);
   void __trace_hashtable_size_report(FILE*, __warning_vector_t&);
@@ -114,6 +116,7 @@ namespace __gnu_profile
   void __trace_list_to_slist_report(FILE*, __warning_vector_t&); 
   void __trace_list_to_vector_report(FILE*, __warning_vector_t&);
   void __trace_map_to_unordered_map_report(FILE*, __warning_vector_t&);
+  void __trace_vector_statistics_report(FILE*, __warning_vector_t&);
 
   struct __cost_factor
   {
@@ -130,6 +133,7 @@ namespace __gnu_profile
   _GLIBCXX_PROFILE_DEFINE_DATA(__trace_vector_to_list*, _S_vector_to_list, 0);
   _GLIBCXX_PROFILE_DEFINE_DATA(__trace_list_to_slist*, _S_list_to_slist, 0); 
   _GLIBCXX_PROFILE_DEFINE_DATA(__trace_list_to_vector*, _S_list_to_vector, 0);
+  _GLIBCXX_PROFILE_DEFINE_DATA(__trace_vector_statistics*, _S_vector_statistics, 0);
 
   _GLIBCXX_PROFILE_DEFINE_DATA(__cost_factor, __vector_shift_cost_factor, 
 			       {"__vector_shift_cost_factor", 1.0});
@@ -444,6 +448,7 @@ namespace __gnu_profile
     __warning_vector_t __warnings, __top_warnings;
 
     FILE* __raw_file = __open_output_file("raw");
+    __trace_vector_statistics_report(__raw_file, __warnings);
     __trace_vector_size_report(__raw_file, __warnings);
     __trace_hashtable_size_report(__raw_file, __warnings);
     __trace_hash_func_report(__raw_file, __warnings);
@@ -631,6 +636,7 @@ namespace __gnu_profile
 	    __trace_list_to_slist_init(); 
 	    __trace_list_to_vector_init();
 	    __trace_map_to_unordered_map_init();
+	    __trace_vector_statistics_init();
 
 	    std::atexit(__report);
 

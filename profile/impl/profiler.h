@@ -143,6 +143,17 @@ namespace __gnu_profile
   void __trace_map_to_unordered_map_iterate(const void*, std::size_t);
   void __trace_map_to_unordered_map_find(const void*, std::size_t);
   void __trace_map_to_unordered_map_destruct(const void*);
+
+  void __trace_vector_statistics_destruct(const void*, std::size_t, std::size_t);
+  void __trace_vector_statistics_construct(const void*, std::size_t);
+  void __trace_vector_statistics_insert(const void*, std::size_t, std::size_t);
+  void __trace_vector_statistics_iterate(const void*, std::size_t);
+  void __trace_vector_statistics_invalid_operator(const void*);
+  void __trace_vector_statistics_resize(const void*, std::size_t, std::size_t);
+  void __trace_vector_statistics_find(const void*, std::size_t);
+  void __trace_vector_statistics_push_back_pre(const void*);
+  void __trace_vector_statistics_push_back_post(const void*);
+
 } // namespace __gnu_profile
 
 // Master switch turns on all diagnostics that are not explicitly turned off.
@@ -174,6 +185,10 @@ namespace __gnu_profile
 #ifndef _GLIBCXX_PROFILE_NO_MAP_TO_UNORDERED_MAP
 #define _GLIBCXX_PROFILE_MAP_TO_UNORDERED_MAP
 #endif
+#ifndef _GLIBCXX_PROFILE_NO_VECTOR_STATISTICS
+#define _GLIBCXX_PROFILE_VECTOR_STATISTICS
+#endif
+
 #endif
 
 // Expose global management routines to user code.
@@ -361,6 +376,49 @@ namespace __gnu_profile
 #define __profcxx_map_to_unordered_map_find(__x...)
 #endif
 
+// Turn on/off instrumentation for VECTOR_STATISTICS.
+#if defined(_GLIBCXX_PROFILE_VECTOR_STATISTICS)
+#define __profcxx_vector_statistics_construct(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_construct(__x))
+#define __profcxx_vector_statistics_destruct(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_destruct(__x))
+#define __profcxx_vector_statistics_insert(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_insert(__x))
+#define __profcxx_vector_statistics_iterate(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_iterate(__x))
+#define __profcxx_vector_statistics_invalid_operator(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_invalid_operator(__x))
+#define __profcxx_vector_statistics_resize(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_resize(__x))
+#define __profcxx_vector_statistics_find(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_find(__x))
+#define __profcxx_vector_statistics_push_back_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_push_back_pre(__x))
+#define __profcxx_vector_statistics_push_back_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_push_back_post(__x))
+
+#else
+#define __profcxx_vector_statistics_destruct(__x...)
+#define __profcxx_vector_statistics_construct(__x...)
+#define __profcxx_vector_statistics_insert(__x...)
+#define __profcxx_vector_statistics_iterate(__x...)
+#define __profcxx_vector_statistics_invalid_operator(__x...)
+#define __profcxx_vector_statistics_resize(__x...)
+#define __profcxx_vector_statistics_find(__x...)
+#define __profcxx_vector_statistics_push_back_pre(__x...)
+#define __profcxx_vector_statistics_push_back_post(__x...)
+#endif
+
+
 // Set default values for compile-time customizable variables.
 #ifndef _GLIBCXX_PROFILE_TRACE_PATH_ROOT
 #define _GLIBCXX_PROFILE_TRACE_PATH_ROOT "libstdcxx-profile"
@@ -398,5 +456,6 @@ namespace __gnu_profile
 #include "profile/impl/profiler_vector_to_list.h"
 #include "profile/impl/profiler_list_to_slist.h"
 #include "profile/impl/profiler_list_to_vector.h"
+#include "profile/impl/profiler_vector_statistics.h"
 
 #endif // _GLIBCXX_PROFILE_PROFILER_H

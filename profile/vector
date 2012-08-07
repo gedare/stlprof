@@ -80,6 +80,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -89,6 +90,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
       vector(size_type __n, const _Tp& __value,
@@ -97,6 +99,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 #else
       explicit
@@ -106,6 +109,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 #endif
 
@@ -116,6 +120,7 @@ namespace __profile
         {
 	  __profcxx_vector_construct(this, this->capacity());
 	  __profcxx_vector_construct2(this);
+    __profcxx_vector_statistics_construct(this, this->capacity());
 	}
 
       vector(const vector& __x)
@@ -123,6 +128,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
       /// Construction from a release-mode vector
@@ -131,6 +137,7 @@ namespace __profile
       { 
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -139,6 +146,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
       vector(const _Base& __x, const _Allocator& __a)
@@ -146,6 +154,7 @@ namespace __profile
       { 
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
       vector(vector&& __x, const _Allocator& __a) noexcept
@@ -153,6 +162,7 @@ namespace __profile
       {
         __profcxx_vector_construct(this, this->capacity());
         __profcxx_vector_construct2(this);
+        __profcxx_vector_statistics_construct(this, this->capacity());
       }
 
       vector(initializer_list<value_type> __l,
@@ -164,6 +174,7 @@ namespace __profile
       {
         __profcxx_vector_destruct(this, this->capacity(), this->size());
         __profcxx_vector_destruct2(this);
+        __profcxx_vector_statistics_destruct(this, this->capacity(), this->size());
       }
 
       vector&
@@ -179,6 +190,7 @@ namespace __profile
       {
 	__profcxx_vector_destruct(this, this->capacity(), this->size());
 	__profcxx_vector_destruct2(this);
+  __profcxx_vector_statistics_destruct(this, this->capacity(), this->size());
 	static_cast<_Base&>(*this) = std::move(__x);
 	return *this;
       }
@@ -331,8 +343,11 @@ namespace __profile
       push_back(const _Tp& __x)
       {
         size_type __old_size = this->capacity();
+
+        __profcxx_vector_statistics_push_back_pre(this);
 	_Base::push_back(__x);
-        _M_profile_resize(this, __old_size, this->capacity());
+        __profcxx_vector_statistics_push_back_post(this);
+        _M_profile_resize(this, __old_size, this->capacity()); // XXX
       }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -340,7 +355,9 @@ namespace __profile
       push_back(_Tp&& __x)
       {
         size_type __old_size = this->capacity();
+        __profcxx_vector_statistics_push_back_pre(this);
         _Base::push_back(std::move(__x));
+        __profcxx_vector_statistics_push_back_post(this);
         _M_profile_resize(this, __old_size, this->capacity());
       }
 
@@ -350,6 +367,9 @@ namespace __profile
       insert(iterator __position, const _Tp& __x)
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
+                                this->size());
+        __profcxx_vector_statistics_insert(this,
+                                __position.base() - _Base::begin(),
                                 this->size());
         size_type __old_size = this->capacity();
 	typename _Base::iterator __res = _Base::insert(__position.base(), __x);
@@ -362,6 +382,9 @@ namespace __profile
       insert(iterator __position, _Tp&& __x)
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
+                                this->size());
+        __profcxx_vector_statistics_insert(this,
+                                __position.base() - _Base::begin(),
                                 this->size());
         size_type __old_size = this->capacity();
 	typename _Base::iterator __res = _Base::insert(__position.base(), __x);
@@ -396,6 +419,9 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
                                 this->size());
+        __profcxx_vector_statistics_insert(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         size_type __old_size = this->capacity();
         _Base::insert(__position, __n, __x);
         _M_profile_resize(this, __old_size, this->capacity());
@@ -408,6 +434,9 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base()-_Base::begin(),
                                 this->size());
+        __profcxx_vector_statistics_insert(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         size_type __old_size = this->capacity();
         _Base::insert(__position, __first, __last);
         _M_profile_resize(this, __old_size, this->capacity());
@@ -417,7 +446,7 @@ namespace __profile
       iterator
       erase(iterator __position)
       {
-	typename _Base::iterator __res = _Base::erase(__position.base());
+	typename _Base::iterator __res = _Base::erase(__position.base()); // XXX
 	return iterator(__res, this);
       }
 
@@ -436,17 +465,20 @@ namespace __profile
       {
         __profcxx_vector_destruct(this, this->capacity(), this->size());
         __profcxx_vector_destruct2(this);
+        __profcxx_vector_statistics_destruct(this, this->capacity(), this->size());
         _Base::clear();
       }
 
       inline void _M_profile_find() const 
       { 
         __profcxx_vector_find(this, size()); 
+        __profcxx_vector_statistics_find(this, size()); 
       }
 
       inline void _M_profile_iterate(int __rewind = 0) const 
       { 
         __profcxx_vector_iterate(this); 
+        __profcxx_vector_statistics_iterate(this); 
       }
 
     private:
@@ -456,6 +488,7 @@ namespace __profile
         if (__old_size < __new_size) {
           __profcxx_vector_resize(this, this->size(), __new_size);
           __profcxx_vector_resize2(this, this->size(), __new_size);
+          __profcxx_vector_statistics_resize(this, this->size(), __new_size);
         }
       }
     };
