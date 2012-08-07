@@ -67,6 +67,7 @@ namespace __gnu_profile
         : _M_init(0), _M_max(0), _M_min(0), _M_total(0), _M_item_min(0),
         _M_item_max(0), _M_item_total(0), _M_count(0), _M_resize(0), _M_cost(0),
         _M_insert(0), _M_find(0), _M_push_back(0),
+        _M_insert_time(0),
         _M_find_time(0),
         _M_push_back_time(0)
     { }
@@ -79,6 +80,7 @@ namespace __gnu_profile
         _M_resize(__o._M_resize), _M_cost(__o._M_cost),
         _M_insert(__o._M_insert),
         _M_find(__o._M_find), _M_push_back(__o._M_push_back),
+        _M_insert_time(__o._M_insert_time), __insert_time(__o.__insert_time),
         _M_find_time(__o._M_find_time), __find_time(__o.__find_time),
         _M_push_back_time(__o._M_push_back_time),
         __push_back_time(__o.__push_back_time)
@@ -89,6 +91,7 @@ namespace __gnu_profile
         _M_min(0), _M_total(0), _M_item_min(0), _M_item_max(0),
         _M_item_total(0), _M_count(0), _M_resize(0), _M_cost(0),
         _M_insert(0), _M_find(0), _M_push_back(0),
+        _M_insert_time(0),
         _M_find_time(0),
         _M_push_back_time(0)
     { }
@@ -100,14 +103,25 @@ namespace __gnu_profile
         {
           std::fprintf(
               __f,
-              "%Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %llu %llu\n", 
+              "%Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu", 
               _M_init, _M_count, _M_cost, _M_resize, _M_min, _M_max,
               _M_total, _M_item_min, _M_item_max, _M_item_total,
-              _M_insert, _M_find, _M_push_back,
+              _M_insert, _M_find, _M_push_back
+          );
+          std::fprintf(
+              __f,
+              "%llu %llu %llu\n",
+              _M_insert_time,
               _M_find_time,
-              _M_push_back_time);
+              _M_push_back_time
+          );
+          std::fprintf(__f, "insert\n" );
+          __write_timing_vector_t(__insert_time);
+          std::fprintf(__f, "\n" );
+          std::fprintf(__f, "find\n" );
           __write_timing_vector_t(__find_time);
           std::fprintf(__f, "\n" );
+          std::fprintf(__f, "push_back\n" );
           __write_timing_vector_t(__push_back_time);
           std::fprintf( __f, "\n" );
         }
@@ -142,6 +156,7 @@ namespace __gnu_profile
           _M_find       += __o._M_find;
           _M_push_back  += __o._M_push_back;
           _M_resize     += __o._M_resize;
+          _M_insert_time += __o._M_insert_time;
           _M_find_time += __o._M_find_time;
           _M_push_back_time += __o._M_push_back_time;
         }
@@ -169,7 +184,21 @@ namespace __gnu_profile
 
       void
         __opr_insert(std::size_t __pos, std::size_t __num)
-        { _M_insert += 1; }
+        { _M_insert += 1; } // FIXME: add __num? have to hook from insert_post
+
+      void
+        __opr_insert_pre(std::size_t __pos, std::size_t __num)
+        {
+          __opr_insert(__pos, __num);
+          t1 = __builtin_ia32_rdtsc();
+        }
+
+      void
+        __opr_insert_post(unsigned long long t2)
+        {
+          _M_insert_time += (t2 - t1);
+          __insert_time.push_back(__timing_data(t2, _M_insert_time));
+        }
 
       void
         __opr_invalid_operator(const void* __obj)
@@ -200,6 +229,7 @@ namespace __gnu_profile
       float
         __resize_cost(std::size_t __from, std::size_t)
         { return __from; }
+
       void
         __opr_resize(std::size_t __from, std::size_t __to)
         {
@@ -207,7 +237,6 @@ namespace __gnu_profile
           _M_resize += 1;
           _M_max = std::max(_M_max, __to);
         }
-
 
       void
         __opr_push_back( )
@@ -244,11 +273,15 @@ namespace __gnu_profile
       std::size_t _M_cost;
 
       unsigned long long t1;
-      unsigned long long _M_push_back_time;
-      __timing_vector_t __push_back_time;
+
+      unsigned long long _M_insert_time; 
+      __timing_vector_t __insert_time;
+
       unsigned long long _M_find_time;
       __timing_vector_t __find_time;
-      
+
+      unsigned long long _M_push_back_time;
+      __timing_vector_t __push_back_time;
   };
 
 
@@ -299,7 +332,7 @@ namespace __gnu_profile
         }
 
       void
-        __opr_insert(const void* __obj, std::size_t __pos, std::size_t __num)
+        __opr_insert_pre(const void* __obj, std::size_t __pos, std::size_t __num)
         {
           if (!__is_on())
             return;
@@ -308,7 +341,21 @@ namespace __gnu_profile
           if (!__object_info)
             return;
 
-          __object_info->__opr_insert(__pos, __num);
+          __object_info->__opr_insert_pre(__pos, __num);
+        }
+
+      void
+        __opr_insert_post(const void* __obj, std::size_t __pos, std::size_t __num)
+        {
+          unsigned long long t2 = __builtin_ia32_rdtsc(); // FIXME: non-portable
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_insert_post(t2);
         }
 
       void

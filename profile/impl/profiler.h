@@ -384,9 +384,12 @@ namespace __gnu_profile
 #define __profcxx_vector_statistics_destruct(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_destruct(__x))
-#define __profcxx_vector_statistics_insert(__x...) \
+#define __profcxx_vector_statistics_insert_pre(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
-      __gnu_profile::__trace_vector_statistics_insert(__x))
+      __gnu_profile::__trace_vector_statistics_insert_pre(__x))
+#define __profcxx_vector_statistics_insert_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_insert_post(__x))
 #define __profcxx_vector_statistics_invalid_operator(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_invalid_operator(__x))
@@ -403,7 +406,8 @@ namespace __gnu_profile
 #else
 #define __profcxx_vector_statistics_destruct(__x...)
 #define __profcxx_vector_statistics_construct(__x...)
-#define __profcxx_vector_statistics_insert(__x...)
+#define __profcxx_vector_statistics_insert_pre(__x...)
+#define __profcxx_vector_statistics_insert_post(__x...)
 #define __profcxx_vector_statistics_invalid_operator(__x...)
 #define __profcxx_vector_statistics_resize(__x...)
 #define __profcxx_vector_statistics_push_back_pre(__x...)
@@ -418,9 +422,12 @@ namespace __gnu_profile
 #define __profcxx_map_statistics_destruct(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_map_statistics_destruct(__x))
-#define __profcxx_map_statistics_insert(__x...) \
+#define __profcxx_map_statistics_insert_pre(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
-      __gnu_profile::__trace_map_statistics_insert(__x))
+      __gnu_profile::__trace_map_statistics_insert_pre(__x))
+#define __profcxx_map_statistics_insert_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_insert_post(__x))
 #define __profcxx_map_statistics_invalid_operator(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_map_statistics_invalid_operator(__x))
@@ -433,7 +440,8 @@ namespace __gnu_profile
 #else
 #define __profcxx_map_statistics_destruct(__x...)
 #define __profcxx_map_statistics_construct(__x...)
-#define __profcxx_map_statistics_insert(__x...)
+#define __profcxx_map_statistics_insert_pre(__x...)
+#define __profcxx_map_statistics_insert_post(__x...)
 #define __profcxx_map_statistics_invalid_operator(__x...)
 #define __profcxx_map_statistics_find_pre(__x...)
 #define __profcxx_map_statistics_find_post(__x...)

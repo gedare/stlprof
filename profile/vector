@@ -368,11 +368,14 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
                                 this->size());
-        __profcxx_vector_statistics_insert(this,
+        size_type __old_size = this->capacity();
+        __profcxx_vector_statistics_insert_pre(this,
                                 __position.base() - _Base::begin(),
                                 this->size());
-        size_type __old_size = this->capacity();
 	typename _Base::iterator __res = _Base::insert(__position.base(), __x);
+        __profcxx_vector_statistics_insert_post(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         _M_profile_resize(this, __old_size, this->capacity());
 	return iterator(__res, this);
       }
@@ -383,11 +386,14 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
                                 this->size());
-        __profcxx_vector_statistics_insert(this,
+        size_type __old_size = this->capacity();
+        __profcxx_vector_statistics_insert_pre(this,
                                 __position.base() - _Base::begin(),
                                 this->size());
-        size_type __old_size = this->capacity();
 	typename _Base::iterator __res = _Base::insert(__position.base(), __x);
+        __profcxx_vector_statistics_insert_post(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         _M_profile_resize(this, __old_size, this->capacity());
 	return iterator(__res, this);
       }
@@ -419,11 +425,14 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base() - _Base::begin(),
                                 this->size());
-        __profcxx_vector_statistics_insert(this,
+        size_type __old_size = this->capacity();
+        __profcxx_vector_statistics_insert_pre(this,
                                 __position.base() - _Base::begin(),
                                 this->size());
-        size_type __old_size = this->capacity();
         _Base::insert(__position, __n, __x);
+        __profcxx_vector_statistics_insert_post(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         _M_profile_resize(this, __old_size, this->capacity());
       }
 
@@ -434,11 +443,14 @@ namespace __profile
       {
         __profcxx_vector_insert(this, __position.base()-_Base::begin(),
                                 this->size());
-        __profcxx_vector_statistics_insert(this,
+        size_type __old_size = this->capacity();
+        __profcxx_vector_statistics_insert_pre(this,
                                 __position.base() - _Base::begin(),
                                 this->size());
-        size_type __old_size = this->capacity();
         _Base::insert(__position, __first, __last);
+        __profcxx_vector_statistics_insert_post(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
         _M_profile_resize(this, __old_size, this->capacity());
       }
 

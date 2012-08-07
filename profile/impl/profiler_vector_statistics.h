@@ -83,13 +83,23 @@ namespace __gnu_profile
     }
 
   inline void
-  __trace_vector_statistics_insert(const void* __obj, std::size_t __pos,
+  __trace_vector_statistics_insert_pre(const void* __obj, std::size_t __pos,
 				std::size_t __num)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_insert(__obj, __pos, __num);
+    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_insert_pre(__obj, __pos, __num);
+  }
+
+  inline void
+  __trace_vector_statistics_insert_post(const void* __obj, std::size_t __pos,
+				std::size_t __num)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_insert_post(__obj, __pos, __num);
   }
 
   inline void

@@ -226,7 +226,7 @@ namespace __profile
         mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv _Base::operator[](__k);
+        rv = _Base::operator[](__k);
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }
@@ -238,7 +238,7 @@ namespace __profile
         mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv _Base::operator[](std::move(__k));
+        rv = _Base::operator[](std::move(__k));
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }
@@ -272,8 +272,9 @@ namespace __profile
       {
         __profcxx_map_to_unordered_map_insert(this, size(), 1);
 	typedef typename _Base::iterator _Base_iterator;
-        __profcxx_map_statistics_insert(this, size(), 1);
+        __profcxx_map_statistics_insert_pre(this, size(), 1);
 	std::pair<_Base_iterator, bool> __res = _Base::insert(__x);
+        __profcxx_map_statistics_insert_post(this, size(), 1);
 	return std::pair<iterator, bool>(iterator(__res.first),
 					 __res.second);
       }
@@ -287,9 +288,10 @@ namespace __profile
         {
 	  __profcxx_map_to_unordered_map_insert(this, size(), 1);
 	  typedef typename _Base::iterator _Base_iterator;
-        __profcxx_map_statistics_insert(this, size(), 1);
+        __profcxx_map_statistics_insert_pre(this, size(), 1);
 	  std::pair<_Base_iterator, bool> __res
 	    = _Base::insert(std::forward<_Pair>(__x));
+        __profcxx_map_statistics_insert_post(this, size(), 1);
 	  return std::pair<iterator, bool>(iterator(__res.first),
 					   __res.second);
 	}
@@ -300,8 +302,9 @@ namespace __profile
       insert(std::initializer_list<value_type> __list)
       { 
         size_type size_before = size();
+        __profcxx_map_statistics_insert_pre(this, size_before, size()-size_before);
         _Base::insert(__list); 
-        __profcxx_map_statistics_insert(this, size_before, size()-size_before);
+        __profcxx_map_statistics_insert_post(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_insert(this, size_before, 
 					      size() - size_before);
       }
@@ -315,8 +318,9 @@ namespace __profile
 #endif
       {
         size_type size_before = size();
+        __profcxx_map_statistics_insert_pre(this, size_before, size()-size_before);
 	iterator __i = iterator(_Base::insert(__position, __x));
-        __profcxx_map_statistics_insert(this, size_before, size()-size_before);
+        __profcxx_map_statistics_insert_post(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_insert(this, size_before, 
 					      size() - size_before);
 	return __i;
@@ -330,9 +334,10 @@ namespace __profile
         insert(const_iterator __position, _Pair&& __x)
         {
 	  size_type size_before = size();
+	      __profcxx_map_statistics_insert_pre(this, size_before, size()-size_before);
 	  iterator __i
 	    = iterator(_Base::insert(__position, std::forward<_Pair>(__x)));
-	      __profcxx_map_statistics_insert(this, size_before, size()-size_before);
+	      __profcxx_map_statistics_insert_post(this, size_before, size()-size_before);
 	  __profcxx_map_to_unordered_map_insert(this, size_before, 
 						size() - size_before);
 	  return __i;
@@ -344,8 +349,9 @@ namespace __profile
         insert(_InputIterator __first, _InputIterator __last)
         {
           size_type size_before = size();
+          __profcxx_map_statistics_insert_pre(this, size_before, size()-size_before);
 	  _Base::insert(__first, __last);
-          __profcxx_map_statistics_insert(this, size_before, size()-size_before);
+          __profcxx_map_statistics_insert_post(this, size_before, size()-size_before);
           __profcxx_map_to_unordered_map_insert(this, size_before, 
                                                 size() - size_before);
 	}
