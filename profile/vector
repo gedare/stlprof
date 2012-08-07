@@ -471,14 +471,12 @@ namespace __profile
 
       inline void _M_profile_find() const 
       { 
-        __profcxx_vector_find(this, size()); 
         __profcxx_vector_statistics_find(this, size()); 
       }
 
       inline void _M_profile_iterate(int __rewind = 0) const 
       { 
         __profcxx_vector_iterate(this); 
-        __profcxx_vector_statistics_iterate(this); 
       }
 
     private:

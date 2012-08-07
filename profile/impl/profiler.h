@@ -387,18 +387,12 @@ namespace __gnu_profile
 #define __profcxx_vector_statistics_insert(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_insert(__x))
-#define __profcxx_vector_statistics_iterate(__x...) \
-  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
-      __gnu_profile::__trace_vector_statistics_iterate(__x))
 #define __profcxx_vector_statistics_invalid_operator(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_invalid_operator(__x))
 #define __profcxx_vector_statistics_resize(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_resize(__x))
-#define __profcxx_vector_statistics_find(__x...) \
-  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
-      __gnu_profile::__trace_vector_statistics_find(__x))
 #define __profcxx_vector_statistics_push_back_pre(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_push_back_pre(__x))
@@ -410,12 +404,39 @@ namespace __gnu_profile
 #define __profcxx_vector_statistics_destruct(__x...)
 #define __profcxx_vector_statistics_construct(__x...)
 #define __profcxx_vector_statistics_insert(__x...)
-#define __profcxx_vector_statistics_iterate(__x...)
 #define __profcxx_vector_statistics_invalid_operator(__x...)
 #define __profcxx_vector_statistics_resize(__x...)
-#define __profcxx_vector_statistics_find(__x...)
 #define __profcxx_vector_statistics_push_back_pre(__x...)
 #define __profcxx_vector_statistics_push_back_post(__x...)
+#endif
+
+// Turn on/off instrumentation for MAP_STATISTICS.
+#if defined(_GLIBCXX_PROFILE_MAP_STATISTICS)
+#define __profcxx_map_statistics_construct(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_construct(__x))
+#define __profcxx_map_statistics_destruct(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_destruct(__x))
+#define __profcxx_map_statistics_insert(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_insert(__x))
+#define __profcxx_map_statistics_invalid_operator(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_invalid_operator(__x))
+#define __profcxx_map_statistics_find_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_find_pre(__x))
+#define __profcxx_map_statistics_find_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_find_post(__x))
+#else
+#define __profcxx_map_statistics_destruct(__x...)
+#define __profcxx_map_statistics_construct(__x...)
+#define __profcxx_map_statistics_insert(__x...)
+#define __profcxx_map_statistics_invalid_operator(__x...)
+#define __profcxx_map_statistics_find_pre(__x...)
+#define __profcxx_map_statistics_find_post(__x...)
 #endif
 
 

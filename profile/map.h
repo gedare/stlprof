@@ -67,22 +67,34 @@ namespace __profile
       map(const _Compare& __comp = _Compare(),
 	  const _Allocator& __a = _Allocator())
       : _Base(__comp, __a)
-      { __profcxx_map_to_unordered_map_construct(this); }
+      {
+        __profcxx_map_to_unordered_map_construct(this);
+        __profcxx_map_statistics_construct(this);
+      }
 
       template<typename _InputIterator>
         map(_InputIterator __first, _InputIterator __last,
 	    const _Compare& __comp = _Compare(),
 	    const _Allocator& __a = _Allocator())
 	: _Base(__first, __last, __comp, __a)
-        { __profcxx_map_to_unordered_map_construct(this); }
+        {
+          __profcxx_map_to_unordered_map_construct(this);
+          __profcxx_map_statistics_construct(this);
+        }
 
       map(const map& __x)
       : _Base(__x)
-      { __profcxx_map_to_unordered_map_construct(this); }
+      {
+        __profcxx_map_to_unordered_map_construct(this);
+        __profcxx_map_statistics_construct(this);
+      }
 
       map(const _Base& __x)
       : _Base(__x)
-      { __profcxx_map_to_unordered_map_construct(this); }
+      {
+        __profcxx_map_to_unordered_map_construct(this);
+        __profcxx_map_statistics_construct(this);
+      }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
       map(map&& __x)
@@ -97,7 +109,10 @@ namespace __profile
 #endif
 
       ~map() _GLIBCXX_NOEXCEPT
-      { __profcxx_map_to_unordered_map_destruct(this); }
+      {
+        __profcxx_map_to_unordered_map_destruct(this);
+        __profcxx_map_statistics_destruct(this);
+      }
 
       map&
       operator=(const map& __x)
@@ -208,31 +223,47 @@ namespace __profile
       mapped_type&
       operator[](const key_type& __k)
       {
+        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        return _Base::operator[](__k);
+        __profcxx_map_statistics_find_pre(this, size());
+        rv _Base::operator[](__k);
+        __profcxx_map_statistics_find_post(this, size());
+        return rv;
       }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
       mapped_type&
       operator[](key_type&& __k)
       {
+        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        return _Base::operator[](std::move(__k));
+        __profcxx_map_statistics_find_pre(this, size());
+        rv _Base::operator[](std::move(__k));
+        __profcxx_map_statistics_find_post(this, size());
+        return rv;
       }
 #endif
 
       mapped_type&
       at(const key_type& __k)
       {
+        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        return _Base::at(__k);
+        __profcxx_map_statistics_find_pre(this, size());
+        rv = _Base::at(__k);
+        __profcxx_map_statistics_find_post(this, size());
+        return rv;
       }
 
       const mapped_type&
       at(const key_type& __k) const
       {
+        const mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        return _Base::at(__k);
+        __profcxx_map_statistics_find_pre(this, size());
+        rv = _Base::at(__k);
+        __profcxx_map_statistics_find_post(this, size());
+        return rv;
       }
 
       // modifiers:
@@ -241,6 +272,7 @@ namespace __profile
       {
         __profcxx_map_to_unordered_map_insert(this, size(), 1);
 	typedef typename _Base::iterator _Base_iterator;
+        __profcxx_map_statistics_insert(this, size(), 1);
 	std::pair<_Base_iterator, bool> __res = _Base::insert(__x);
 	return std::pair<iterator, bool>(iterator(__res.first),
 					 __res.second);
@@ -255,6 +287,7 @@ namespace __profile
         {
 	  __profcxx_map_to_unordered_map_insert(this, size(), 1);
 	  typedef typename _Base::iterator _Base_iterator;
+        __profcxx_map_statistics_insert(this, size(), 1);
 	  std::pair<_Base_iterator, bool> __res
 	    = _Base::insert(std::forward<_Pair>(__x));
 	  return std::pair<iterator, bool>(iterator(__res.first),
@@ -268,6 +301,7 @@ namespace __profile
       { 
         size_type size_before = size();
         _Base::insert(__list); 
+        __profcxx_map_statistics_insert(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_insert(this, size_before, 
 					      size() - size_before);
       }
@@ -282,6 +316,7 @@ namespace __profile
       {
         size_type size_before = size();
 	iterator __i = iterator(_Base::insert(__position, __x));
+        __profcxx_map_statistics_insert(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_insert(this, size_before, 
 					      size() - size_before);
 	return __i;
@@ -297,6 +332,7 @@ namespace __profile
 	  size_type size_before = size();
 	  iterator __i
 	    = iterator(_Base::insert(__position, std::forward<_Pair>(__x)));
+	      __profcxx_map_statistics_insert(this, size_before, size()-size_before);
 	  __profcxx_map_to_unordered_map_insert(this, size_before, 
 						size() - size_before);
 	  return __i;
@@ -309,6 +345,7 @@ namespace __profile
         {
           size_type size_before = size();
 	  _Base::insert(__first, __last);
+          __profcxx_map_statistics_insert(this, size_before, size()-size_before);
           __profcxx_map_to_unordered_map_insert(this, size_before, 
                                                 size() - size_before);
 	}
@@ -373,22 +410,34 @@ namespace __profile
       iterator
       find(const key_type& __x)
       {
+        iterator __i;
         __profcxx_map_to_unordered_map_find(this, size());
-        return iterator(_Base::find(__x));
+        __profcxx_map_statistics_find_pre(this, size());
+        __i = iterator(_Base::find(__x));
+        __profcxx_map_statistics_find_post(this, size());
+        return __i;
       }
 
       const_iterator
       find(const key_type& __x) const
       {
+        const_iterator __i;
         __profcxx_map_to_unordered_map_find(this, size());
-        return const_iterator(_Base::find(__x));
+        __profcxx_map_statistics_find_pre(this, size());
+        __i = const_iterator(_Base::find(__x));
+        __profcxx_map_statistics_find_post(this, size());
+        return __i;
       }
 
       size_type
       count(const key_type& __x) const
       {
+        size_type rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        return _Base::count(__x);
+        __profcxx_map_statistics_find_pre(this, size());
+        rv = _Base::count(__x);
+        __profcxx_map_statistics_find_post(this, size());
+        return rv;
       }
 
       iterator

@@ -21,14 +21,14 @@
 // with this library; see the file COPYING3.  If not see
 // <http://www.gnu.org/licenses/>.
 
-/** @file profile/impl/profiler_vector_statistics.h
- *  @brief Collection of vector statistics traces.
+/** @file profile/impl/profiler_map_statistics.h
+ *  @brief Collection of map statistics traces.
  */
 
 // Written by Lixia Liu and Silvius Rus.
 
-#ifndef _GLIBCXX_PROFILE_PROFILER_VECTOR_STATISTICS_H
-#define _GLIBCXX_PROFILE_PROFILER_VECTOR_STATISTICS_H 1
+#ifndef _GLIBCXX_PROFILE_PROFILER_MAP_STATISTICS_H
+#define _GLIBCXX_PROFILE_PROFILER_MAP_STATISTICS_H 1
 
 #include "profile/impl/profiler.h"
 #include "profile/impl/profiler_node.h"
@@ -38,98 +38,98 @@
 
 namespace __gnu_profile
 {
-  /** @brief vector statistics instrumentation trace producer.  */
-  class __trace_vector_statistics
+  /** @brief map statistics instrumentation trace producer.  */
+  class __trace_map_statistics
     : public __trace_container_statistics
   {
     public:
-      __trace_vector_statistics()
+      __trace_map_statistics()
         : __trace_container_statistics()
-      { __id = "vector-statistics"; }
+      { __id = "map-statistics"; }
   };
 
   inline void
-    __trace_vector_statistics_init()
-    { _GLIBCXX_PROFILE_DATA(_S_vector_statistics) = new __trace_vector_statistics(); }
+    __trace_map_statistics_init()
+    { _GLIBCXX_PROFILE_DATA(_S_map_statistics) = new __trace_map_statistics(); }
 
   inline void
-    __trace_vector_statistics_report(FILE* __f, __warning_vector_t& __warnings)
+    __trace_map_statistics_report(FILE* __f, __warning_map_t& __warnings)
     {
-      if (_GLIBCXX_PROFILE_DATA(_S_vector_statistics))
+      if (_GLIBCXX_PROFILE_DATA(_S_map_statistics))
       {
-        _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__collect_warnings(__warnings);
-        _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__write(__f);
+        _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__collect_warnings(__warnings);
+        _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__write(__f);
       }
     }
 
   inline void
-    __trace_vector_statistics_construct(const void* __obj, std::size_t __num)
+    __trace_map_statistics_construct(const void* __obj, std::size_t __num)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__insert(__obj, __get_stack(),
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__insert(__obj, __get_stack(),
           __num);
     }
 
   inline void
-    __trace_vector_statistics_destruct(const void* __obj, std::size_t __num,
+    __trace_map_statistics_destruct(const void* __obj, std::size_t __num,
         std::size_t __inum)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_destruct(__obj, __num, __inum);
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_destruct(__obj, __num, __inum);
     }
 
   inline void
-  __trace_vector_statistics_insert(const void* __obj, std::size_t __pos,
+  __trace_map_statistics_insert(const void* __obj, std::size_t __pos,
 				std::size_t __num)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_insert(__obj, __pos, __num);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_insert(__obj, __pos, __num);
   }
 
   inline void
-  __trace_vector_statistics_invalid_operator(const void* __obj)
+  __trace_map_statistics_invalid_operator(const void* __obj)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_invalid_operator(__obj);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_invalid_operator(__obj);
   }
 
   inline void
-    __trace_vector_statistics_resize(const void* __obj, std::size_t __from,
+    __trace_map_statistics_resize(const void* __obj, std::size_t __from,
         std::size_t __to)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_resize(__obj, __from, __to);
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_resize(__obj, __from, __to);
     }
 
   inline void
-  __trace_vector_statistics_push_back_pre(const void* __obj)
+  __trace_map_statistics_find_pre(const void* __obj)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_push_back_pre(__obj);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_pre(__obj);
   }
 
   inline void
-  __trace_vector_statistics_push_back_post(const void* __obj)
+  __trace_map_statistics_find_post(const void* __obj)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_vector_statistics)->__opr_push_back_post(__obj);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_post(__obj);
   }
 
 
 } // namespace __gnu_profile
 
-#endif /* _GLIBCXX_PROFILE_PROFILER_VECTOR_STATISTICS_H */
+#endif /* _GLIBCXX_PROFILE_PROFILER_MAP_STATISTICS_H */
