@@ -1071,6 +1071,7 @@ profile_impl_headers = \
 	${profile_impl_srcdir}/profiler_container_statistics.h \
 	${profile_impl_srcdir}/profiler_hash_func.h \
 	${profile_impl_srcdir}/profiler_hashtable_size.h \
+	${profile_impl_srcdir}/profiler_map_statistics.h \
 	${profile_impl_srcdir}/profiler_map_to_unordered_map.h \
 	${profile_impl_srcdir}/profiler_node.h \
 	${profile_impl_srcdir}/profiler_state.h \

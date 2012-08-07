@@ -53,7 +53,7 @@ namespace __gnu_profile
     { _GLIBCXX_PROFILE_DATA(_S_map_statistics) = new __trace_map_statistics(); }
 
   inline void
-    __trace_map_statistics_report(FILE* __f, __warning_map_t& __warnings)
+    __trace_map_statistics_report(FILE* __f, __warning_vector_t& __warnings)
     {
       if (_GLIBCXX_PROFILE_DATA(_S_map_statistics))
       {
@@ -122,21 +122,21 @@ namespace __gnu_profile
     }
 
   inline void
-  __trace_map_statistics_find_pre(const void* __obj)
+  __trace_map_statistics_find_pre(const void* __obj, std::size_t __size)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_pre(__obj);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_pre(__obj, __size);
   }
 
   inline void
-  __trace_map_statistics_find_post(const void* __obj)
+  __trace_map_statistics_find_post(const void* __obj, std::size_t __size)
   {
     if (!__profcxx_init())
       return;
 
-    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_post(__obj);
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_post(__obj, __size);
   }
 
 
