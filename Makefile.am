@@ -801,6 +801,7 @@ profile_impl_headers = \
 	${profile_impl_srcdir}/profiler.h \
 	${profile_impl_srcdir}/profiler_algos.h \
 	${profile_impl_srcdir}/profiler_container_size.h \
+	${profile_impl_srcdir}/profiler_container_statistics.h \
 	${profile_impl_srcdir}/profiler_hash_func.h \
 	${profile_impl_srcdir}/profiler_hashtable_size.h \
 	${profile_impl_srcdir}/profiler_map_to_unordered_map.h \
@@ -808,6 +809,7 @@ profile_impl_headers = \
 	${profile_impl_srcdir}/profiler_state.h \
 	${profile_impl_srcdir}/profiler_trace.h \
 	${profile_impl_srcdir}/profiler_vector_size.h \
+	${profile_impl_srcdir}/profiler_vector_statistics.h \
 	${profile_impl_srcdir}/profiler_vector_to_list.h \
 	${profile_impl_srcdir}/profiler_list_to_vector.h \
 	${profile_impl_srcdir}/profiler_list_to_slist.h
