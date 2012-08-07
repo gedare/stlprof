@@ -146,13 +146,20 @@ namespace __gnu_profile
 
   void __trace_vector_statistics_destruct(const void*, std::size_t, std::size_t);
   void __trace_vector_statistics_construct(const void*, std::size_t);
-  void __trace_vector_statistics_insert(const void*, std::size_t, std::size_t);
-  void __trace_vector_statistics_iterate(const void*, std::size_t);
+  void __trace_vector_statistics_insert_pre(const void*, std::size_t, std::size_t);
+  void __trace_vector_statistics_insert_post(const void*, std::size_t, std::size_t);
   void __trace_vector_statistics_invalid_operator(const void*);
   void __trace_vector_statistics_resize(const void*, std::size_t, std::size_t);
-  void __trace_vector_statistics_find(const void*, std::size_t);
   void __trace_vector_statistics_push_back_pre(const void*);
   void __trace_vector_statistics_push_back_post(const void*);
+
+  void __trace_map_statistics_destruct(const void*, std::size_t, std::size_t);
+  void __trace_map_statistics_construct(const void*, std::size_t);
+  void __trace_map_statistics_insert_pre(const void*, std::size_t, std::size_t);
+  void __trace_map_statistics_insert_post(const void*, std::size_t, std::size_t);
+  void __trace_map_statistics_invalid_operator(const void*);
+  void __trace_map_statistics_find_pre(const void*, std::size_t);
+  void __trace_map_statistics_find_post(const void*, std::size_t);
 
 } // namespace __gnu_profile
 
@@ -486,5 +493,6 @@ namespace __gnu_profile
 #include "profile/impl/profiler_list_to_slist.h"
 #include "profile/impl/profiler_list_to_vector.h"
 #include "profile/impl/profiler_vector_statistics.h"
+#include "profile/impl/profiler_map_statistics.h"
 
 #endif // _GLIBCXX_PROFILE_PROFILER_H
