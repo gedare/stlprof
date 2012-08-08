@@ -111,7 +111,7 @@ namespace __profile
       ~map() _GLIBCXX_NOEXCEPT
       {
         __profcxx_map_to_unordered_map_destruct(this);
-        __profcxx_map_statistics_destruct(this);
+        __profcxx_map_statistics_destruct(this, this->size());
       }
 
       map&
@@ -223,10 +223,9 @@ namespace __profile
       mapped_type&
       operator[](const key_type& __k)
       {
-        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv = _Base::operator[](__k);
+        mapped_type& rv = _Base::operator[](__k);
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }
@@ -235,10 +234,9 @@ namespace __profile
       mapped_type&
       operator[](key_type&& __k)
       {
-        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv = _Base::operator[](std::move(__k));
+        mapped_type& rv = _Base::operator[](std::move(__k));
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }
@@ -247,10 +245,9 @@ namespace __profile
       mapped_type&
       at(const key_type& __k)
       {
-        mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv = _Base::at(__k);
+        mapped_type& rv = _Base::at(__k);
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }
@@ -258,10 +255,9 @@ namespace __profile
       const mapped_type&
       at(const key_type& __k) const
       {
-        const mapped_type& rv;
         __profcxx_map_to_unordered_map_find(this, size());
         __profcxx_map_statistics_find_pre(this, size());
-        rv = _Base::at(__k);
+        const mapped_type& rv = _Base::at(__k);
         __profcxx_map_statistics_find_post(this, size());
         return rv;
       }

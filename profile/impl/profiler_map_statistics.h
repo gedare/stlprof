@@ -63,23 +63,21 @@ namespace __gnu_profile
     }
 
   inline void
-    __trace_map_statistics_construct(const void* __obj, std::size_t __num)
+    __trace_map_statistics_construct(const void* __obj)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__insert(__obj, __get_stack(),
-          __num);
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__insert(__obj, __get_stack(), 0);
     }
 
   inline void
-    __trace_map_statistics_destruct(const void* __obj, std::size_t __num,
-        std::size_t __inum)
+    __trace_map_statistics_destruct(const void* __obj, std::size_t __num)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_destruct(__obj, __num, __inum);
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_destruct(__obj, 0, __num);
     }
 
   inline void
@@ -110,16 +108,6 @@ namespace __gnu_profile
 
     _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_invalid_operator(__obj);
   }
-
-  inline void
-    __trace_map_statistics_resize(const void* __obj, std::size_t __from,
-        std::size_t __to)
-    {
-      if (!__profcxx_init())
-        return;
-
-      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_resize(__obj, __from, __to);
-    }
 
   inline void
   __trace_map_statistics_find_pre(const void* __obj, std::size_t __size)

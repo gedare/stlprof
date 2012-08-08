@@ -195,7 +195,9 @@ namespace __gnu_profile
 #ifndef _GLIBCXX_PROFILE_NO_VECTOR_STATISTICS
 #define _GLIBCXX_PROFILE_VECTOR_STATISTICS
 #endif
-
+#ifndef _GLIBCXX_PROFILE_NO_MAP_STATISTICS
+#define _GLIBCXX_PROFILE_MAP_STATISTICS
+#endif
 #endif
 
 // Expose global management routines to user code.
