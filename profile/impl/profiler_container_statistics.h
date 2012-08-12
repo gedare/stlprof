@@ -55,7 +55,7 @@ namespace __gnu_profile
 #define __write_timing_vector_t(NAME)                                     \
   for ( typename __timing_vector_t::const_iterator __it                   \
       = NAME.begin(); __it != NAME.end(); ++__it ) {                  \
-    std::fprintf(__f, "%llu %llu\n", (*__it).__time, (*__it).__latency);  \
+    std::fprintf(__f, " %llu %llu", (*__it).__time, (*__it).__latency);  \
   }
 
   /** @brief A container statistics instrumentation line in the object table. */
@@ -110,20 +110,18 @@ namespace __gnu_profile
           );
           std::fprintf(
               __f,
-              "%llu %llu %llu\n",
+              " %llu %llu %llu",
               _M_insert_time,
               _M_find_time,
               _M_push_back_time
           );
-          std::fprintf(__f, "insert\n" );
+          std::fprintf(__f, "\ninsert" );
           __write_timing_vector_t(__insert_time);
-          std::fprintf(__f, "\n" );
-          std::fprintf(__f, "find\n" );
+          std::fprintf(__f, "\nfind" );
           __write_timing_vector_t(__find_time);
-          std::fprintf(__f, "\n" );
-          std::fprintf(__f, "push_back\n" );
+          std::fprintf(__f, "\npush_back" );
           __write_timing_vector_t(__push_back_time);
-          std::fprintf( __f, "\n" );
+          std::fprintf(__f, "\n" );
         }
 
       float
