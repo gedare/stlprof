@@ -148,6 +148,9 @@ namespace __gnu_profile
   void __trace_vector_statistics_construct(const void*, std::size_t);
   void __trace_vector_statistics_insert_pre(const void*, std::size_t, std::size_t);
   void __trace_vector_statistics_insert_post(const void*, std::size_t, std::size_t);
+
+  void __trace_vector_statistics_erase_pre(const void*, std::size_t, std::size_t);
+  void __trace_vector_statistics_erase_post(const void*, std::size_t, std::size_t);
   void __trace_vector_statistics_invalid_operator(const void*);
   void __trace_vector_statistics_resize(const void*, std::size_t, std::size_t);
   void __trace_vector_statistics_push_back_pre(const void*);
@@ -157,6 +160,8 @@ namespace __gnu_profile
   void __trace_map_statistics_construct(const void*, std::size_t);
   void __trace_map_statistics_insert_pre(const void*, std::size_t, std::size_t);
   void __trace_map_statistics_insert_post(const void*, std::size_t, std::size_t);
+  void __trace_map_statistics_erase_pre(const void*, std::size_t, std::size_t);
+  void __trace_map_statistics_erase_post(const void*, std::size_t, std::size_t);
   void __trace_map_statistics_invalid_operator(const void*);
   void __trace_map_statistics_find_pre(const void*, std::size_t);
   void __trace_map_statistics_find_post(const void*, std::size_t);
@@ -399,6 +404,12 @@ namespace __gnu_profile
 #define __profcxx_vector_statistics_insert_post(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_insert_post(__x))
+#define __profcxx_vector_statistics_erase_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_erase_pre(__x))
+#define __profcxx_vector_statistics_erase_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_vector_statistics_erase_post(__x))
 #define __profcxx_vector_statistics_invalid_operator(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_vector_statistics_invalid_operator(__x))
@@ -417,6 +428,8 @@ namespace __gnu_profile
 #define __profcxx_vector_statistics_construct(__x...)
 #define __profcxx_vector_statistics_insert_pre(__x...)
 #define __profcxx_vector_statistics_insert_post(__x...)
+#define __profcxx_vector_statistics_erase_pre(__x...)
+#define __profcxx_vector_statistics_erase_post(__x...)
 #define __profcxx_vector_statistics_invalid_operator(__x...)
 #define __profcxx_vector_statistics_resize(__x...)
 #define __profcxx_vector_statistics_push_back_pre(__x...)
@@ -437,6 +450,12 @@ namespace __gnu_profile
 #define __profcxx_map_statistics_insert_post(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_map_statistics_insert_post(__x))
+#define __profcxx_map_statistics_erase_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_erase_pre(__x))
+#define __profcxx_map_statistics_erase_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_erase_post(__x))
 #define __profcxx_map_statistics_invalid_operator(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_map_statistics_invalid_operator(__x))
@@ -451,6 +470,8 @@ namespace __gnu_profile
 #define __profcxx_map_statistics_construct(__x...)
 #define __profcxx_map_statistics_insert_pre(__x...)
 #define __profcxx_map_statistics_insert_post(__x...)
+#define __profcxx_map_statistics_erase_pre(__x...)
+#define __profcxx_map_statistics_erase_post(__x...)
 #define __profcxx_map_statistics_invalid_operator(__x...)
 #define __profcxx_map_statistics_find_pre(__x...)
 #define __profcxx_map_statistics_find_post(__x...)

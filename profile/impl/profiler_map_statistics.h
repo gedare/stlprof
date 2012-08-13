@@ -101,6 +101,26 @@ namespace __gnu_profile
   }
 
   inline void
+  __trace_map_statistics_erase_pre(const void* __obj, std::size_t __pos,
+				std::size_t __num)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_erase_pre(__obj, __pos, __num);
+  }
+
+  inline void
+  __trace_map_statistics_erase_post(const void* __obj, std::size_t __pos,
+				std::size_t __num)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_erase_post(__obj, __pos, __num);
+  }
+
+  inline void
   __trace_map_statistics_invalid_operator(const void* __obj)
   {
     if (!__profcxx_init())

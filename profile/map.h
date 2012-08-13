@@ -117,7 +117,9 @@ namespace __profile
       map&
       operator=(const map& __x)
       {
+        __profcxx_map_statistics_insert_pre(this, size(), 1);
 	*static_cast<_Base*>(this) = __x;
+        __profcxx_map_statistics_insert_post(this, size(), 1);
 	return *this;
       }
 
@@ -356,7 +358,10 @@ namespace __profile
       iterator
       erase(const_iterator __position)
       {
+          size_type size_before = size();
+          __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
 	iterator __i = _Base::erase(__position);
+          __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_erase(this, size(), 1);
         return __i;
       }
@@ -368,7 +373,10 @@ namespace __profile
       void
       erase(iterator __position)
       {
+          size_type size_before = size();
+          __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
 	_Base::erase(__position);
+          __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
         __profcxx_map_to_unordered_map_erase(this, size(), 1);
       }
 #endif
@@ -381,7 +389,10 @@ namespace __profile
 	  return 0;
 	else
 	{
+          size_type size_before = size();
+          __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
 	  _Base::erase(__victim);
+          __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
 	  return 1;
 	}
       }
@@ -389,11 +400,22 @@ namespace __profile
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
       iterator
       erase(const_iterator __first, const_iterator __last)
-      { return iterator(_Base::erase(__first, __last)); }
+      {
+          size_type size_before = size();
+        __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+        iterator __i = _Base::erase(__first, __last);
+        __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+        return __i;
+      }
 #else
       void
       erase(iterator __first, iterator __last)
-      { _Base::erase(__first, __last); }
+      {
+          size_type size_before = size();
+        __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+        _Base::erase(__first, __last);
+        __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+      }
 #endif
 
       void

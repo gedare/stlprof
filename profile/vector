@@ -458,17 +458,30 @@ namespace __profile
       iterator
       erase(iterator __position)
       {
+        __profcxx_vector_statistics_erase_pre(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
 	typename _Base::iterator __res = _Base::erase(__position.base()); // XXX
+        __profcxx_vector_statistics_erase_post(this,
+                                __position.base() - _Base::begin(),
+                                this->size());
 	return iterator(__res, this);
       }
 
       iterator
       erase(iterator __first, iterator __last)
       {
+        __profcxx_vector_statistics_erase_pre(this,
+                                __first.base() - _Base::begin(),
+                                this->size());
 	// _GLIBCXX_RESOLVE_LIB_DEFECTS
 	// 151. can't currently clear() empty container
 	typename _Base::iterator __res = _Base::erase(__first.base(),
                                                       __last.base());
+        __profcxx_vector_statistics_erase_post(this,
+                                __first.base() - _Base::begin(),
+                                this->size());
+
 	return iterator(__res, this);
       }
 
