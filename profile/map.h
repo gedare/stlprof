@@ -371,10 +371,9 @@ namespace __profile
       void
       erase(iterator __position)
       {
-          size_type size_before = size();
-          __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+          __profcxx_map_statistics_erase_pre(this, size(), 1);
 	_Base::erase(__position);
-          __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+          __profcxx_map_statistics_erase_post(this, size(), 1);
         __profcxx_map_to_unordered_map_erase(this, size(), 1);
       }
 #endif
@@ -388,9 +387,9 @@ namespace __profile
 	else
 	{
           size_type size_before = size();
-          __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+          __profcxx_map_statistics_erase_pre(this, size_before, 1);
 	  _Base::erase(__victim);
-          __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+          __profcxx_map_statistics_erase_post(this, size(), 1);
 	  return 1;
 	}
       }
@@ -400,9 +399,9 @@ namespace __profile
       erase(const_iterator __first, const_iterator __last)
       {
           size_type size_before = size();
-        __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+        __profcxx_map_statistics_erase_pre(this, size_before, 0);
         iterator __i = _Base::erase(__first, __last);
-        __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+        __profcxx_map_statistics_erase_post(this, size_before, size_before - size());
         return __i;
       }
 #else
@@ -410,9 +409,9 @@ namespace __profile
       erase(iterator __first, iterator __last)
       {
           size_type size_before = size();
-        __profcxx_map_statistics_erase_pre(this, size_before, size()-size_before);
+        __profcxx_map_statistics_erase_pre(this, size_before, 0);
         _Base::erase(__first, __last);
-        __profcxx_map_statistics_erase_post(this, size_before, size()-size_before);
+        __profcxx_map_statistics_erase_post(this, size_before, size_before - size());
       }
 #endif
 
