@@ -165,7 +165,12 @@ namespace __gnu_profile
   void __trace_map_statistics_invalid_operator(const void*);
   void __trace_map_statistics_find_pre(const void*, std::size_t);
   void __trace_map_statistics_find_post(const void*, std::size_t);
-
+  void __trace_map_statistics_lower_bound_pre(const void*, std::size_t);
+  void __trace_map_statistics_lower_bound_post(const void*, std::size_t);
+  void __trace_map_statistics_upper_bound_pre(const void*, std::size_t);
+  void __trace_map_statistics_upper_bound_post(const void*, std::size_t);
+  void __trace_map_statistics_equal_range_pre(const void*, std::size_t);
+  void __trace_map_statistics_equal_range_post(const void*, std::size_t);
 } // namespace __gnu_profile
 
 // Master switch turns on all diagnostics that are not explicitly turned off.
@@ -465,6 +470,24 @@ namespace __gnu_profile
 #define __profcxx_map_statistics_find_post(__x...) \
   _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
       __gnu_profile::__trace_map_statistics_find_post(__x))
+#define __profcxx_map_statistics_lower_bound_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_lower_bound_pre(__x))
+#define __profcxx_map_statistics_lower_bound_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_lower_bound_post(__x))
+#define __profcxx_map_statistics_upper_bound_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_upper_bound_pre(__x))
+#define __profcxx_map_statistics_upper_bound_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_upper_bound_post(__x))
+#define __profcxx_map_statistics_equal_range_pre(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_equal_range_pre(__x))
+#define __profcxx_map_statistics_equal_range_post(__x...) \
+  _GLIBCXX_PROFILE_REENTRANCE_GUARD( \
+      __gnu_profile::__trace_map_statistics_equal_range_post(__x))
 #else
 #define __profcxx_map_statistics_destruct(__x...)
 #define __profcxx_map_statistics_construct(__x...)
@@ -475,6 +498,12 @@ namespace __gnu_profile
 #define __profcxx_map_statistics_invalid_operator(__x...)
 #define __profcxx_map_statistics_find_pre(__x...)
 #define __profcxx_map_statistics_find_post(__x...)
+#define __profcxx_map_statistics_lower_bound_pre(__x...)
+#define __profcxx_map_statistics_lower_bound_post(__x...)
+#define __profcxx_map_statistics_upper_bound_pre(__x...)
+#define __profcxx_map_statistics_upper_bound_post(__x...)
+#define __profcxx_map_statistics_equal_range_pre(__x...)
+#define __profcxx_map_statistics_equal_range_post(__x...)
 #endif
 
 

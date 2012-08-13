@@ -455,7 +455,7 @@ namespace __profile
       {
         size_type rv;
         __profcxx_map_to_unordered_map_find(this, size());
-        __profcxx_map_statistics_find_pre(this, size());
+        __profcxx_map_statistics_find_pre(this, size()); // FIXME
         rv = _Base::count(__x);
         __profcxx_map_statistics_find_post(this, size());
         return rv;
@@ -465,36 +465,50 @@ namespace __profile
       lower_bound(const key_type& __x)
       { 
         __profcxx_map_to_unordered_map_invalidate(this);
-        return iterator(_Base::lower_bound(__x)); 
+        __profcxx_map_statistics_lower_bound_pre(this, size());
+        iterator __i = _Base::lower_bound(__x);
+        __profcxx_map_statistics_lower_bound_post(this, size());
+        return __i;
       }
 
       const_iterator
       lower_bound(const key_type& __x) const
       { 
         __profcxx_map_to_unordered_map_invalidate(this);
-        return const_iterator(_Base::lower_bound(__x)); 
+        __profcxx_map_statistics_lower_bound_pre(this, size());
+        const_iterator __i = _Base::lower_bound(__x);
+        __profcxx_map_statistics_lower_bound_post(this, size());
+        return __i;
       }
 
       iterator
       upper_bound(const key_type& __x)
       { 
         __profcxx_map_to_unordered_map_invalidate(this);
-        return iterator(_Base::upper_bound(__x)); 
+        __profcxx_map_statistics_upper_bound_pre(this, size());
+        iterator __i = _Base::upper_bound(__x);
+        __profcxx_map_statistics_upper_bound_post(this, size());
+        return __i;
       }
 
       const_iterator
       upper_bound(const key_type& __x) const
       { 
         __profcxx_map_to_unordered_map_invalidate(this);
-        return const_iterator(_Base::upper_bound(__x)); 
+        __profcxx_map_statistics_upper_bound_pre(this, size());
+        const_iterator __i = _Base::upper_bound(__x);
+        __profcxx_map_statistics_upper_bound_post(this, size());
+        return __i;
       }
 
       std::pair<iterator,iterator>
       equal_range(const key_type& __x)
       {
 	typedef typename _Base::iterator _Base_iterator;
+        __profcxx_map_statistics_equal_range_pre(this, size());
 	std::pair<_Base_iterator, _Base_iterator> __res =
 	_Base::equal_range(__x);
+        __profcxx_map_statistics_equal_range_post(this, size());
 	return std::make_pair(iterator(__res.first),
 			      iterator(__res.second));
       }
@@ -503,9 +517,11 @@ namespace __profile
       equal_range(const key_type& __x) const
       {
         __profcxx_map_to_unordered_map_find(this, size());
+        __profcxx_map_statistics_equal_range_pre(this, size());
 	typedef typename _Base::const_iterator _Base_const_iterator;
 	std::pair<_Base_const_iterator, _Base_const_iterator> __res =
 	_Base::equal_range(__x);
+        __profcxx_map_statistics_equal_range_post(this, size());
 	return std::make_pair(const_iterator(__res.first),
 			      const_iterator(__res.second));
       }

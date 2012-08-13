@@ -148,6 +148,60 @@ namespace __gnu_profile
     _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_find_post(__obj, __size);
   }
 
+  inline void
+  __trace_map_statistics_lower_bound_pre(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_lower_bound_pre(__obj, __size);
+  }
+
+  inline void
+  __trace_map_statistics_lower_bound_post(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_lower_bound_post(__obj, __size);
+  }
+
+  inline void
+  __trace_map_statistics_upper_bound_pre(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_upper_bound_pre(__obj, __size);
+  }
+
+  inline void
+  __trace_map_statistics_upper_bound_post(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_upper_bound_post(__obj, __size);
+  }
+
+  inline void
+  __trace_map_statistics_equal_range_pre(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_equal_range_pre(__obj, __size);
+  }
+
+  inline void
+  __trace_map_statistics_equal_range_post(const void* __obj, std::size_t __size)
+  {
+    if (!__profcxx_init())
+      return;
+
+    _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_equal_range_post(__obj, __size);
+  }
+
 
 } // namespace __gnu_profile
 

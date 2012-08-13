@@ -66,9 +66,14 @@ namespace __gnu_profile
       __container_statistics_info()
         : _M_init(0), _M_max(0), _M_min(0), _M_total(0), _M_item_min(0),
         _M_item_max(0), _M_item_total(0), _M_count(0), _M_resize(0), _M_cost(0),
-        _M_insert(0), _M_erase(0), _M_find(0), _M_push_back(0),
+        _M_insert(0), _M_erase(0), 
+        _M_find(0), _M_lower_bound(0), _M_upper_bound(0), _M_equal_range(0),
+        _M_push_back(0),
         _M_insert_time(0), _M_erase_time(0),
         _M_find_time(0),
+        _M_lower_bound_time(0),
+        _M_upper_bound_time(0),
+        _M_equal_range_time(0),
         _M_push_back_time(0)
     { }
 
@@ -79,10 +84,17 @@ namespace __gnu_profile
         _M_item_total(__o._M_item_total), _M_count(__o._M_count),
         _M_resize(__o._M_resize), _M_cost(__o._M_cost),
         _M_insert(__o._M_insert), _M_erase(__o._M_erase),
-        _M_find(__o._M_find), _M_push_back(__o._M_push_back),
+        _M_find(__o._M_find),
+        _M_lower_bound(__o._M_lower_bound),
+        _M_upper_bound(__o._M_upper_bound),
+        _M_equal_range(__o._M_equal_range),
+        _M_push_back(__o._M_push_back),
         _M_insert_time(__o._M_insert_time), __insert_time(__o.__insert_time),
         _M_erase_time(__o._M_erase_time), __erase_time(__o.__erase_time),
         _M_find_time(__o._M_find_time), __find_time(__o.__find_time),
+        _M_lower_bound_time(__o._M_lower_bound_time), __lower_bound_time(__o.__lower_bound_time),
+        _M_upper_bound_time(__o._M_upper_bound_time), __upper_bound_time(__o.__upper_bound_time),
+        _M_equal_range_time(__o._M_equal_range_time), __equal_range_time(__o.__equal_range_time),
         _M_push_back_time(__o._M_push_back_time),
         __push_back_time(__o.__push_back_time)
     { }
@@ -91,9 +103,14 @@ namespace __gnu_profile
         : __object_info_base(__stack), _M_init(__num), _M_max(__num),
         _M_min(0), _M_total(0), _M_item_min(0), _M_item_max(0),
         _M_item_total(0), _M_count(0), _M_resize(0), _M_cost(0),
-        _M_insert(0), _M_erase(0), _M_find(0), _M_push_back(0),
+        _M_insert(0), _M_erase(0), 
+        _M_find(0), _M_lower_bound(0), _M_upper_bound(0), _M_equal_range(0),
+        _M_push_back(0),
         _M_insert_time(0), _M_erase_time(0),
         _M_find_time(0),
+        _M_lower_bound_time(0),
+        _M_upper_bound_time(0),
+        _M_equal_range_time(0),
         _M_push_back_time(0)
     { }
 
@@ -104,17 +121,25 @@ namespace __gnu_profile
         {
           std::fprintf(
               __f,
-              "%Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu", 
+              "%Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu %Zu", 
               _M_init, _M_count, _M_cost, _M_resize, _M_min, _M_max,
               _M_total, _M_item_min, _M_item_max, _M_item_total,
-              _M_insert, _M_erase, _M_find, _M_push_back
+              _M_insert, _M_erase, 
+              _M_find, 
+              _M_lower_bound, 
+              _M_upper_bound, 
+              _M_equal_range, 
+              _M_push_back
           );
           std::fprintf(
               __f,
-              " %llu %llu %llu %llu",
+              " %llu %llu %llu %llu %llu %llu %llu",
               _M_insert_time,
               _M_erase_time,
               _M_find_time,
+              _M_lower_bound_time,
+              _M_upper_bound_time,
+              _M_equal_range_time,
               _M_push_back_time
           );
           std::fprintf(__f, "\ninsert" );
@@ -123,6 +148,12 @@ namespace __gnu_profile
           __write_timing_vector_t(__erase_time);
           std::fprintf(__f, "\nfind" );
           __write_timing_vector_t(__find_time);
+          std::fprintf(__f, "\nlower_bound" );
+          __write_timing_vector_t(__lower_bound_time);
+          std::fprintf(__f, "\nupper_bound" );
+          __write_timing_vector_t(__upper_bound_time);
+          std::fprintf(__f, "\nequal_range" );
+          __write_timing_vector_t(__equal_range_time);
           std::fprintf(__f, "\npush_back" );
           __write_timing_vector_t(__push_back_time);
           std::fprintf(__f, "\n" );
@@ -157,11 +188,17 @@ namespace __gnu_profile
           _M_insert     += __o._M_insert;
           _M_erase     += __o._M_erase;
           _M_find       += __o._M_find;
+          _M_lower_bound       += __o._M_lower_bound;
+          _M_upper_bound       += __o._M_upper_bound;
+          _M_equal_range       += __o._M_equal_range;
           _M_push_back  += __o._M_push_back;
           _M_resize     += __o._M_resize;
           _M_insert_time += __o._M_insert_time;
           _M_erase_time += __o._M_erase_time;
           _M_find_time += __o._M_find_time;
+          _M_lower_bound_time += __o._M_lower_bound_time;
+          _M_upper_bound_time += __o._M_upper_bound_time;
+          _M_equal_range_time += __o._M_equal_range_time;
           _M_push_back_time += __o._M_push_back_time;
         }
 
@@ -250,6 +287,62 @@ namespace __gnu_profile
           _M_find_time += latency;
           __find_time.push_back(__timing_data(find_t1, latency));
         }
+      void
+        __opr_lower_bound(const void* __obj, std::size_t __size)
+        { _M_lower_bound += 1; }
+
+      void
+        __opr_lower_bound_pre(const void* __obj, std::size_t __size)
+        {
+          __opr_lower_bound(__obj, __size);
+          lower_bound_t1 = __builtin_ia32_rdtsc();
+        }
+
+      void
+        __opr_lower_bound_post(unsigned long long t2)
+        {
+          unsigned long long latency = t2 - lower_bound_t1;
+          _M_lower_bound_time += latency;
+          __lower_bound_time.push_back(__timing_data(lower_bound_t1, latency));
+        }
+
+      void
+        __opr_upper_bound(const void* __obj, std::size_t __size)
+        { _M_upper_bound += 1; }
+
+      void
+        __opr_upper_bound_pre(const void* __obj, std::size_t __size)
+        {
+          __opr_upper_bound(__obj, __size);
+          upper_bound_t1 = __builtin_ia32_rdtsc();
+        }
+
+      void
+        __opr_upper_bound_post(unsigned long long t2)
+        {
+          unsigned long long latency = t2 - upper_bound_t1;
+          _M_upper_bound_time += latency;
+          __upper_bound_time.push_back(__timing_data(upper_bound_t1, latency));
+        }
+
+      void
+        __opr_equal_range(const void* __obj, std::size_t __size)
+        { _M_equal_range += 1; }
+
+      void
+        __opr_equal_range_pre(const void* __obj, std::size_t __size)
+        {
+          __opr_equal_range(__obj, __size);
+          equal_range_t1 = __builtin_ia32_rdtsc();
+        }
+
+      void
+        __opr_equal_range_post(unsigned long long t2)
+        {
+          unsigned long long latency = t2 - equal_range_t1;
+          _M_equal_range_time += latency;
+          __equal_range_time.push_back(__timing_data(equal_range_t1, latency));
+        }
 
       // list objects
       // Estimate the cost of resize/rehash. 
@@ -297,6 +390,9 @@ namespace __gnu_profile
       std::size_t _M_insert;
       std::size_t _M_erase;
       std::size_t _M_find;
+      std::size_t _M_lower_bound;
+      std::size_t _M_upper_bound;
+      std::size_t _M_equal_range;
       std::size_t _M_push_back;
       std::size_t _M_resize;
       std::size_t _M_cost;
@@ -304,6 +400,9 @@ namespace __gnu_profile
       unsigned long long insert_t1;
       unsigned long long erase_t1;
       unsigned long long find_t1;
+      unsigned long long lower_bound_t1;
+      unsigned long long upper_bound_t1;
+      unsigned long long equal_range_t1;
       unsigned long long push_back_t1;
 
       unsigned long long _M_insert_time; 
@@ -314,6 +413,15 @@ namespace __gnu_profile
 
       unsigned long long _M_find_time;
       __timing_vector_t __find_time;
+
+      unsigned long long _M_upper_bound_time;
+      __timing_vector_t __upper_bound_time;
+
+      unsigned long long _M_equal_range_time;
+      __timing_vector_t __equal_range_time;
+      
+      unsigned long long _M_lower_bound_time;
+      __timing_vector_t __lower_bound_time;
 
       unsigned long long _M_push_back_time;
       __timing_vector_t __push_back_time;
@@ -474,6 +582,90 @@ namespace __gnu_profile
             return;
 
           __object_info->__opr_find_post(t2);
+        }
+
+      void
+        __opr_upper_bound_pre(const void* __obj, std::size_t __size)
+        {
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_upper_bound_pre(__obj, __size);
+        }
+
+      void
+        __opr_upper_bound_post(const void* __obj, std::size_t __size)
+        {
+          unsigned long long t2 = __builtin_ia32_rdtsc(); // FIXME: non-portable
+
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_upper_bound_post(t2);
+        }
+
+      void
+        __opr_equal_range_pre(const void* __obj, std::size_t __size)
+        {
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_equal_range_pre(__obj, __size);
+        }
+
+      void
+        __opr_equal_range_post(const void* __obj, std::size_t __size)
+        {
+          unsigned long long t2 = __builtin_ia32_rdtsc(); // FIXME: non-portable
+
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_equal_range_post(t2);
+        }
+
+      void
+        __opr_lower_bound_pre(const void* __obj, std::size_t __size)
+        {
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_lower_bound_pre(__obj, __size);
+        }
+
+      void
+        __opr_lower_bound_post(const void* __obj, std::size_t __size)
+        {
+          unsigned long long t2 = __builtin_ia32_rdtsc(); // FIXME: non-portable
+
+          if (!__is_on())
+            return;
+
+          __container_statistics_info* __object_info = __get_object_info(__obj);
+          if (!__object_info)
+            return;
+
+          __object_info->__opr_lower_bound_post(t2);
         }
 
       void
