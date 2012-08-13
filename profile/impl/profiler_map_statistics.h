@@ -72,12 +72,13 @@ namespace __gnu_profile
     }
 
   inline void
-    __trace_map_statistics_destruct(const void* __obj, std::size_t __num)
+    __trace_map_statistics_destruct(const void* __obj, std::size_t __num,
+        std::size_t __inum)
     {
       if (!__profcxx_init())
         return;
 
-      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_destruct(__obj, 0, __num);
+      _GLIBCXX_PROFILE_DATA(_S_map_statistics)->__opr_destruct(__obj, __num, __inum);
     }
 
   inline void

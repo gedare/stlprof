@@ -111,15 +111,13 @@ namespace __profile
       ~map() _GLIBCXX_NOEXCEPT
       {
         __profcxx_map_to_unordered_map_destruct(this);
-        __profcxx_map_statistics_destruct(this, this->size());
+        __profcxx_map_statistics_destruct(this, 0, this->size());
       }
 
       map&
       operator=(const map& __x)
       {
-        __profcxx_map_statistics_insert_pre(this, size(), 1);
 	*static_cast<_Base*>(this) = __x;
-        __profcxx_map_statistics_insert_post(this, size(), 1);
 	return *this;
       }
 
