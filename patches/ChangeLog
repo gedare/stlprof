@@ -1,0 +1,14 @@
+2013-05-07  Gedare Bloom <gedare@rtems.org>
+
+	* include/profile/impl/profiler_container_statistics.h: New.
+	* include/profile/impl/profiler_vector_statistics.h: New.
+	* include/profile/impl/profiler_map_statistics.h: New.
+	* include/Makefile.am: Add new profile headers.
+	* include/Makefile.in: Regenerate.
+	* include/profile/impl/profiler.h: New macros for
+	__profcxx_vector_statistics and __profcxx_map_statistics.
+	* include/profile/impl/profiler_trace.h: Class and function declarations
+	for std::profile::__trace_vector_statistics and
+	std::profile::__trace_map_statistics.
+	* include/profile/map.h: Use __profcxx_map_statistics macros.
+	* include/profile/vector: Use __profcxx_vector_statistics macros.
