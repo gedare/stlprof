@@ -12,6 +12,8 @@ and would be a good place to start if updating to newer versions of GCC.
 
 This software is incompletely tested and not production quality. The timing
 mechanisms are hard-coded for x86 (ia32) only with the rdstc built-in.
+The timing mechanism does not consider variable effects such as interrupts and
+context switches.
 
 The original profiling framework is described in
 * Lixia Liu and Silvius Rus. "Perflint: A context sensitive performance advisor
